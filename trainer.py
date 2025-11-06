@@ -68,8 +68,8 @@ class Trainer:
                 avg_loss = total_loss / len(self.train_loader)
                 val_loss, val_accuracy = self.validate()
 
-                mlflow.log_metric("train_loss", avg_loss, step=epoch)
-                mlflow.log_metric("val_loss", val_loss, step=epoch)
+                mlflow.log_metric("loss_train", avg_loss, step=epoch)
+                mlflow.log_metric("loss_val", val_loss, step=epoch)
                 mlflow.log_metric("val_accuracy", val_accuracy, step=epoch)
 
                 logger.info(f"Epoch {epoch+1}/{self.cfg.training.num_epochs} - "

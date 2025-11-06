@@ -13,12 +13,12 @@ from trainer import Trainer
 # -------------------------
 dataset_dir = "./archive"     # dossier de base contenant les classes
 output_dir  = "./dataset"     # dossier où seront créés train/val/test
-total_fraction = 0.2          # on prend 20% du dataset total
+total_fraction = 1          # on prend 20% du dataset total
 
 @hydra.main(version_base=None, config_path="configs", config_name="config")
 def main(cfg: DictConfig):
     images, labels = find_images(dataset_dir)
-    (train, y_train), (val, y_val), (test, y_test) = split(images, labels)
+    (train, y_train), (val, y_val), (test, y_test) = split(images, labels,0)
     print("📂 Copie des fichiers en cours...")
     save_split(train, y_train, "train")
     save_split(val, y_val, "val")
@@ -32,10 +32,13 @@ def main(cfg: DictConfig):
     model = ViTForImageClassification.from_pretrained(
     "google/vit-base-patch16-224",
     num_labels=num_labels,
-    ignore_mismatched_sizes=True  # réinitialise la tête classifier pour 2 classes
+    ignore_mismatched_sizes=True,
+    attention_probs_dropout_prob=0.2,  # Dropout sur attention
+    hidden_dropout_prob=0.3             # Dropout sur MLP
     ).to("cuda")
     trainer = Trainer(model, train_loader, val_loader, cfg)
     trainer.train()
+    
 
 if __name__ == "__main__":
     main()
