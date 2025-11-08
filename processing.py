@@ -16,9 +16,11 @@ def find_images(dataset_dir: str) -> list:
     for label in os.listdir(dataset_dir):
         label_dir = os.path.join(dataset_dir, label)
         if os.path.isdir(label_dir):
-            for img_path in glob.glob(os.path.join(label_dir, "*.png")):
-                images.append(img_path)
-                labels.append(label)
+            # On parcourt plusieurs extensions
+            for ext in ["*.png", "*.jpg", "*.jpeg", "*.JPEG"]:
+                for img_path in glob.glob(os.path.join(label_dir, ext)):
+                    images.append(img_path)
+                    labels.append(label)
     return images, labels
 
 def split(images: list, labels: list, total_fraction: float = 0.1):

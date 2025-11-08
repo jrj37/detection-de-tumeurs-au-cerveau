@@ -26,7 +26,7 @@ def build_dataloader(train_dataset,val_dataset,batch_size):
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader   = DataLoader(val_dataset, batch_size=batch_size)
     # Prendre un batch
-    images, labels = next(iter(train_loader))
+    images, _ = next(iter(train_loader))
 
     print("Taille du batch d'images :", images.shape)
 
