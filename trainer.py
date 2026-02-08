@@ -15,7 +15,11 @@ class Trainer:
         self.val_loader = val_loader
         self.cfg = cfg
 
-        self.device = torch.device(cfg.training.device if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(
+            "cuda" if torch.cuda.is_available() 
+            else "mps" if torch.backends.mps.is_available() 
+            else "cpu"
+        )
         self.model.to(self.device)
 
         # Optimizer
