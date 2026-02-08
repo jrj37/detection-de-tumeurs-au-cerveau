@@ -18,3 +18,4 @@ configs/
 archive/
 dataset/
 .python-version
+.DS_Store   
